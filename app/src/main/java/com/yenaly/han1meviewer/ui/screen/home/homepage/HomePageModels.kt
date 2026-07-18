@@ -9,7 +9,7 @@ import com.yenaly.han1meviewer.logic.model.HomePage
 /**
  * 首页主要数据源
  * @param page 主页主要数据
- * @param announcements 从firebase获取的公告列表
+ * @param announcements 首页公告列表
  */
 data class HomeData(
     val page: HomePage,

@@ -60,7 +60,6 @@ fun HomeSettingsScreen(
     onSearchGridColumnsConfigChange: (SearchGridColumnsConfig) -> Unit,
     onHorizontalCardCountConfigChange: (HorizontalCardCountConfig) -> Unit,
     onUseCIUpdateChannelChange: (Boolean) -> Unit,
-    onUseAnalyticsChange: (Boolean) -> Unit,
     onUseLockScreenChange: (Boolean) -> Unit,
     onThemeColorChange: (String) -> Unit,
     onHomeCategoryPreferencesChange: (List<String>, Set<String>) -> Unit,
@@ -429,15 +428,6 @@ fun HomeSettingsScreen(
         item { SettingsGroupTitle(stringResource(R.string.privacy)) }
         item {
             SettingSwitchItem(
-                title = stringResource(R.string.analytics_title),
-                summary = stringResource(R.string.analytics_summary),
-                checked = state.useAnalytics,
-                iconRes = R.drawable.baseline_data_usage_24,
-                onCheckedChange = onUseAnalyticsChange,
-            )
-        }
-        item {
-            SettingSwitchItem(
                 title = stringResource(R.string.use_lock_screen),
                 summary = stringResource(R.string.use_lock_screen_sum),
                 checked = state.useLockScreen,
@@ -550,7 +540,6 @@ private fun HomeSettingsScreenPreview() {
                 collapseDownloadedGroup = false,
                 useDynamicColor = true,
                 useCIUpdateChannel = false,
-                useAnalytics = true,
                 useLockScreen = false,
                 fakeLauncherIconName = "Han1meViewer",
                 updateSummary = "已經是最新版本！",
@@ -585,7 +574,6 @@ private fun HomeSettingsScreenPreview() {
             onSearchGridColumnsConfigChange = {},
             onHorizontalCardCountConfigChange = {},
             onUseCIUpdateChannelChange = {},
-            onUseAnalyticsChange = {},
             onUseLockScreenChange = {},
             onThemeColorChange = {},
             onHomeCategoryPreferencesChange = { _, _ -> },

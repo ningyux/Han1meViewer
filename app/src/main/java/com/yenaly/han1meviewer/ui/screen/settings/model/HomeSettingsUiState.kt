@@ -23,7 +23,6 @@ data class HomeSettingsUiState(
     val collapseDownloadedGroup: Boolean,
     val useDynamicColor: Boolean,
     val useCIUpdateChannel: Boolean,
-    val useAnalytics: Boolean,
     val useLockScreen: Boolean,
     val fakeLauncherIconName: String,
     val updateSummary: String,

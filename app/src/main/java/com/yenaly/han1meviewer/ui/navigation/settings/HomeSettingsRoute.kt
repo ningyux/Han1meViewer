@@ -2,8 +2,6 @@ package com.yenaly.han1meviewer.ui.navigation.settings
 
 import android.content.Context
 import android.os.Build
-import android.text.method.LinkMovementMethod
-import android.widget.TextView
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,13 +33,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.core.content.edit
-import androidx.core.text.parseAsHtml
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.firebase.Firebase
-import com.google.firebase.analytics.analytics
 import com.yenaly.han1meviewer.BuildConfig
 import com.yenaly.han1meviewer.HanimeConstants
 import com.yenaly.han1meviewer.HA1_GITHUB_FORUM_URL
@@ -80,7 +73,6 @@ private const val HOME_SHOW_PLAYED_INDICATOR = "show_played_indicator"
 private const val HOME_ALLOW_PIP_MODE = "allow_pip_mode"
 private const val HOME_UPDATE_POPUP_INTERVAL_DAYS = "update_popup_interval_days"
 private const val HOME_USE_CI_UPDATE_CHANNEL = "use_ci_update_channel"
-private const val HOME_USE_ANALYTICS = "use_analytics"
 private const val HOME_FAKE_LAUNCHER_ICON = "pref_fake_launcher_icon"
 private const val HOME_USE_DARK_MODE = "use_dark_mode"
 private const val HOME_ALLOW_RESUME_PLAYBACK = "allow_resume_playback"
@@ -119,7 +111,6 @@ fun HomeSettingsRouteScreen(
     var showClearCacheConfirm by remember { mutableStateOf(false) }
     var showLicenseScreen by remember { mutableStateOf(false) }
     var showRestartConfirmDialog by remember { mutableStateOf(false) }
-    var showAnalyticsDialog by remember { mutableStateOf(false) }
     var showLauncherPicker by remember { mutableStateOf(false) }
     var pendingImportUri by remember { mutableStateOf<android.net.Uri?>(null) }
 
@@ -294,15 +285,6 @@ fun HomeSettingsRouteScreen(
             refreshKey++
             AppViewModel.getLatestVersion()
         },
-        onUseAnalyticsChange = { value ->
-            if (!value) {
-                showAnalyticsDialog = true
-                return@HomeSettingsScreen
-            }
-            saveBoolean(HOME_USE_ANALYTICS, true)
-            refreshKey++
-            Firebase.analytics.setAnalyticsCollectionEnabled(true)
-        },
         onUseLockScreenChange = { value ->
             if (value) {
                 if (!isDeviceSecureCompat(context)) {
@@ -427,41 +409,6 @@ fun HomeSettingsRouteScreen(
         )
     }
 
-    if (showAnalyticsDialog) {
-        val message = stringResource(R.string.about_analytics_summary).parseAsHtml()
-        val analyticsMessage = remember { message }
-        AlertDialog(
-            onDismissRequest = {},
-            title = { Text(stringResource(R.string.about_analytics)) },
-            text = {
-                AndroidView(
-                    factory = { ctx ->
-                        TextView(ctx).apply {
-                            text = analyticsMessage
-                            movementMethod = LinkMovementMethod.getInstance()
-                            setPadding(0, 0, 0, 0)
-                        }
-                    },
-                )
-            },
-            confirmButton = {
-                TextButton(onClick = { showAnalyticsDialog = false }) {
-                    Text(stringResource(R.string.ok))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    saveBoolean(HOME_USE_ANALYTICS, false)
-                    refreshKey++
-                    Firebase.analytics.setAnalyticsCollectionEnabled(false)
-                    showAnalyticsDialog = false
-                }) {
-                    Text(stringResource(R.string.deny))
-                }
-            },
-        )
-    }
-
     ConfirmDialog(
         visible = showRestartConfirmDialog,
         title = stringResource(R.string.attention),
@@ -583,7 +530,6 @@ private fun buildHomeSettingsUiState(
         collapseDownloadedGroup = Preferences.collapseDownloadedGroup,
         useDynamicColor = Preferences.useDynamicColor,
         useCIUpdateChannel = Preferences.useCIUpdateChannel,
-        useAnalytics = Preferences.isAnalyticsEnabled,
         useLockScreen = Preferences.preferenceSp.getBoolean(HOME_USE_LOCK_SCREEN, false),
         fakeLauncherIconName = currentItem.name,
         updateSummary = updateSummary,

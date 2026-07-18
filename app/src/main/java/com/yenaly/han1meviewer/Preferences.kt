@@ -291,9 +291,6 @@ object Preferences {
 
     // 隐私 相關
 
-    val isAnalyticsEnabled: Boolean
-        get() = preferenceSp.getBoolean(SettingsPreferenceKeys.USE_ANALYTICS, true)
-
     // 下载 相關
 
     val downloadCountLimit: Int

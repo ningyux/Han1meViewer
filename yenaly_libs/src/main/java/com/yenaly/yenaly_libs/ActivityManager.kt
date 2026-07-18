@@ -57,7 +57,7 @@ object ActivityManager {
     fun restart(killProcess: Boolean = true) {
         val intent = applicationContext.packageManager
             .getLaunchIntentForPackage(applicationContext.packageName)
-        // #issue-crashlytics-b39688491e64c6cde89e73f71a9f42a1
+        // #issue-b39688491e64c6cde89e73f71a9f42a1
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             applicationContext.startActivity(intent)

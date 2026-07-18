@@ -14,7 +14,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,7 +22,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.yenaly.han1meviewer.R
 import com.yenaly.han1meviewer.ui.activity.MainActivity
-import com.yenaly.han1meviewer.util.logScreenViewEvent
 import com.yenaly.yenaly_libs.utils.findActivity
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,10 +42,6 @@ fun SettingsScaffold(
         if (!navController.popBackStack()) {
             navController.navigate(fallbackDestination)
         }
-    }
-
-    LaunchedEffect(currentDestination) {
-        activity.logScreenViewEvent(currentDestination.screenClassName)
     }
 
     Scaffold(

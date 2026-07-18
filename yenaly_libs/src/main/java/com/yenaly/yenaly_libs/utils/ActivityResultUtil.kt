@@ -49,7 +49,7 @@ suspend fun <I, O> Context.awaitActivityResult(
         suspendCoroutine(object : Function1<Continuation<O>, Unit> {
             private var resumed = false
             override fun invoke(cont: Continuation<O>) {
-                // #issue-crashlytics-7b7eaa428e2541056ce949dff5fe4c55
+                // #issue-7b7eaa428e2541056ce949dff5fe4c55
                 launcher = activity.activityResultRegistry.register(key, contract) {
                     if (!resumed) {
                         resumed = true
